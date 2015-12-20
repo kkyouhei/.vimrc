@@ -38,8 +38,7 @@ set wildmenu
 set title
 " スペルチェック
 set spelllang=en,cjk
-" swpファイルを作らない
-set noswapfile
+
 " 全角スペース	の表示
 highlight JpSpace cterm=underline ctermfg=Blue guifg=Blue
 au BufRead,BufNew * match JpSpace /　/
@@ -105,6 +104,55 @@ NeoBundle 'Shougo/vimproc', {
   \ }
 " =================== vimproc =================
 
+" =================== Completion { =================
+  " =================== neocomplcache =================
+  NeoBundle 'Shougo/neocomplcache.vim'
+  let g:acp_enableAtStartup = 0
+  let g:neocomplcache_enable_at_startup = 1
+  let g:neocomplcache_enable_smart_case = 1
+  let g:neocomplcache_min_syntax_length = 3
+  let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+  let g:neocomplcache_dictionary_filetype_lists = {
+      \ 'default' : '',
+      \ 'vimshell' : $HOME.'/.vimshell_hist',
+      \ 'scheme' : $HOME.'/.gosh_completions'
+          \ }
+  if !exists('g:neocomplcache_keyword_patterns')
+      let g:neocomplcache_keyword_patterns = {}
+  endif
+  let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+  inoremap <expr><C-g>     neocomplcache#undo_completion()
+  inoremap <expr><C-l>     neocomplcache#complete_common_string()
+  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+  function! s:my_cr_function()
+    return neocomplcache#smart_close_popup() . "\<CR>"
+  endfunction
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+  inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+  inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+  inoremap <expr><C-y>  neocomplcache#close_popup()
+  inoremap <expr><C-e>  neocomplcache#cancel_popup()
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+  " Enable heavy omni completion.
+  if !exists('g:neocomplcache_force_omni_patterns')
+    let g:neocomplcache_force_omni_patterns = {}
+  endif
+  let g:neocomplcache_force_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+  let g:neocomplcache_force_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+  let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+  " For perlomni.vim setting.
+  " https://github.com/c9s/perlomni.vim
+  let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+  " =================== neocomplcache =================
+
+" =================== } Completion =================
+
 " =================== tag { =================
   " =================== vim-tags =================
   " brew install tags
@@ -158,15 +206,15 @@ endfunction
 
   " =================== unite-rails =================
   NeoBundle 'basyura/unite-rails'
-  noremap :rc :<C-u>Unite rails/controller<CR>
-  noremap :rm :<C-u>Unite rails/model<CR>
-  noremap :rv :<C-u>Unite rails/view<CR>
-  noremap :rh :<C-u>Unite rails/helper<CR>
-  noremap :rs :<C-u>Unite rails/stylesheet<CR>
-  noremap :rj :<C-u>Unite rails/javascript<CR>
-  noremap :rr :<C-u>Unite rails/route<CR>
-  noremap :rg :<C-u>Unite rails/gemfile<CR>
-  noremap :rt :<C-u>Unite rails/spec<CR>
+  nnoremap rc :<C-u>Unite rails/controller<CR>
+  nnoremap rm :<C-u>Unite rails/model<CR>
+  nnoremap rv :<C-u>Unite rails/view<CR>
+  nnoremap rh :<C-u>Unite rails/helper<CR>
+  nnoremap rs :<C-u>Unite rails/stylesheet<CR>
+  nnoremap rj :<C-u>Unite rails/javascript<CR>
+  nnoremap rr :<C-u>Unite rails/route<CR>
+  nnoremap rg :<C-u>Unite rails/gemfile<CR>
+  nnoremap rt :<C-u>Unite rails/spec<CR>
   " =================== unit-rails =================
 
   " =================== vim-ref vim-ref-ri =================
