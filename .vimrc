@@ -14,20 +14,10 @@ set background=dark
 
 " 文字コード
 set fenc=utf-8
-" 自動インテント
-set autoindent
 " 行番号
 set number
-" ソフトタブ
-set expandtab
-" タブ文字を何文字分で表示するか
-set tabstop=2
-" 自動で挿入されるインデントの幅
-set shiftwidth=2
 " 曖昧検索
 set incsearch
-" 自動インデント
-set smartindent
 " 行頭行末でカーソルが止まらない
 set whichwrap=b,s,h,l,<,>,[,]
 " クリップボードをOSと連携
@@ -38,12 +28,49 @@ set wildmenu
 set title
 " スペルチェック
 set spelllang=en,cjk
-
-" 全角スペース	の表示
-highlight JpSpace cterm=underline ctermfg=Blue guifg=Blue
-au BufRead,BufNew * match JpSpace /　/
 " viとの互換性カット
 set nocompatible
+
+" 全角スペースも可視化す
+augroup highlightIdegraphicSpace
+  autocmd!
+  autocmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+  autocmd VimEnter,WinEnter * match IdeographicSpace /　/
+augroup END
+
+" インデント
+set autoindent          "改行時に前の行のインデントを計測
+set smartindent         "改行時に入力された行の末尾に合わせて次の行のインデントを増減する 
+set cindent             "Cプログラムファイルの自動インデントを始める
+set smarttab            "新しい行を作った時に高度な自動インデントを行う
+set expandtab           "タブ入力を複数の空白に置き換える 
+
+set tabstop=2           "タブを含むファイルを開いた際, タブを何文字の空白に変換するか
+set shiftwidth=2        "自動インデントで入る空白数
+set softtabstop=0       "キーボードから入るタブの数
+
+if has("autocmd")
+  "ファイルタイプの検索を有効にする
+  filetype plugin on
+  "ファイルタイプに合わせたインデントを利用
+  filetype indent on
+  "sw=softtabstop, sts=shiftwidth, ts=tabstop, et=expandtabの略
+  autocmd FileType c           setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType html        setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType php         setlocal sw=4 sts=4 ts=4 noexpandtab
+  autocmd FileType ruby        setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType ruby        setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType js          setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType zsh         setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType python      setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType scala       setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType json        setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType html        setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType css         setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType scss        setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType sass        setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType javascript  setlocal sw=4 sts=4 ts=4 et
+endif
 
 " vimrc更新したら自動リロード
 augroup source-vimrc
