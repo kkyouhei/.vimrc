@@ -31,13 +31,6 @@ set spelllang=en,cjk
 " viとの互換性カット
 set nocompatible
 
-" 全角スペースも可視化す
-augroup highlightIdegraphicSpace
-  autocmd!
-  autocmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-  autocmd VimEnter,WinEnter * match IdeographicSpace /　/
-augroup END
-
 " インデント
 set autoindent          "改行時に前の行のインデントを計測
 set smartindent         "改行時に入力された行の末尾に合わせて次の行のインデントを増減する 
